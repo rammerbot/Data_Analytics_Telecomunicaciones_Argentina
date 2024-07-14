@@ -1,6 +1,7 @@
+-- drop database internet;
 -- Crear y conectarse a base de datos -------------------------------------------------------------------------
-create database internet;
-use internet;
+-- create database internet;
+-- use internet;
 
 -- Crear y poblar tabla provincias -------------------------------------------------------
 create table provincia (
@@ -57,4 +58,33 @@ drop column Provincia;
 
 ALTER TABLE penetracion_hogares
 ADD CONSTRAINT fk_provincia_hogares
+FOREIGN KEY (IdProvincia) REFERENCES provincia(IdProvincia);
+
+
+-- Crear relacion entre provincia y tabla kpi_30mbps -----------------------------------------------------
+alter table kpi_30mbps add column IdProvincia int DEFAULT 0;
+
+update kpi_30mbps a
+join provincia p on a.Provincia = p.Provincia
+set a.IdProvincia = p.IdProvincia;
+
+ALTER table kpi_30mbps
+drop column Provincia;
+
+ALTER TABLE kpi_30mbps
+ADD CONSTRAINT fk_provincia_kpi_30mbps
+FOREIGN KEY (IdProvincia) REFERENCES provincia(IdProvincia);
+
+-- Crear relacion entre provincia y tabla kpi_30mbps -----------------------------------------------------
+alter table kpi_fibra add column IdProvincia int DEFAULT 0;
+
+update kpi_fibra a
+join provincia p on a.Provincia = p.Provincia
+set a.IdProvincia = p.IdProvincia;
+
+ALTER table kpi_fibra
+drop column Provincia;
+
+ALTER TABLE kpi_fibra
+ADD CONSTRAINT fk_provincia_kpi_fibrakpi_30mbps
 FOREIGN KEY (IdProvincia) REFERENCES provincia(IdProvincia);
